@@ -12,7 +12,8 @@ import Settings from "../screens/tabs/Settings";
 import Contacts from "../screens/tabs/Contacts";
 import Chat from "../screens/tabs/Chat";
 import Calls from "../screens/tabs/Calls";
-import Home from "../screens/authentification/Home";
+import Home from "../screens/tabs/Home";
+import ChatStackNavigation from "./ChatStackNavigation";
 
 const Tab = createBottomTabNavigator();
 const BottomTabsNavigation = () => {
@@ -188,7 +189,7 @@ const BottomTabsNavigation = () => {
         />
         <Tab.Screen
           name="Chat"
-          component={Chat}
+          component={ChatStackNavigation}
           options={{
             title: "",
             tabBarLabel: "Chat",
