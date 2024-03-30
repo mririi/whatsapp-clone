@@ -1,26 +1,38 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import GetStartedScreen from "./src/screens/GetStartedScreen";
-import LoginScreen from "./src/screens/authentification/LoginScreen";
-import RegisterScreen from "./src/screens/authentification/RegisterScreen";
-import Home from "./src/screens/Home";
+import configureStore from "@store/configureStore";
+import { Provider } from "react-redux";
+import { useEffect, useState } from "react";
+import * as Font from "expo-font";
+import MainStackNavigation from "./src/navigation/MainStackNavigation";
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+  const store = configureStore();
+  useEffect(() => {
+    const prepare = async() => {
+      try {
+        await Font.loadAsync({
+          "poppins-regular": require("@assets/fonts/Poppins-Regular.ttf"),
+          "poppins-bold": require("@assets/fonts/Poppins-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
 
-  //Declaring the stack navigator
-  const Stack = createStackNavigator();
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
+    <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="login" component={LoginScreen} />
-          <Stack.Screen name="register" component={RegisterScreen} />
-          <Stack.Screen name="home" component={Home} />
-          <Stack.Screen name="getStarted" component={GetStartedScreen} />
-        </Stack.Navigator>
+        <MainStackNavigation />
       </NavigationContainer>
+    </Provider>
   );
 }
