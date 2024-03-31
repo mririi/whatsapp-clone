@@ -212,8 +212,8 @@ const BottomTabsNavigation = () => {
                     source={require("@assets/images/chat.png")
                     }
                     style={{
-                      width: focused?normalize(37):normalize(25),
-                      height: focused?normalize(30):normalize(20),
+                      width: focused?normalize(29):normalize(25),
+                      height: focused?normalize(24):normalize(20),
                       position: "absolute",
                       top: normalize(15),
                     }}

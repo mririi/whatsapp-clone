@@ -3,12 +3,12 @@ import { View } from 'react-native'
 import normalize from 'react-native-normalize'
 import colors from '@constants/colors'
 import CustomText from '@components/CustomText'
-import { Pressable } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const CustomMessageBox = (props) => {
     const {contact, onPress} = props
   return (
-    <Pressable style={{
+    <TouchableOpacity style={{
         width:"95%",
         height: normalize(100),
         backgroundColor: colors.secondary,
@@ -37,7 +37,7 @@ const CustomMessageBox = (props) => {
                 <CustomText style={{fontSize: normalize(20), color: colors.textLight}}>{contact?.name}</CustomText>
             </View>
         </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

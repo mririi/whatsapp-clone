@@ -2,8 +2,7 @@ import { db } from "@firebaseConf";
 import { addDoc, collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
 export const SET_CONTACTS = "SET_CONTACTS";
 export const SET_MESSAGES = "SET_MESSAGES";
-
-export const SET_LAST_MESSAGE_PER_CONTACT = "SET_LAST_MESSAGE_PER_CONTACT";
+export const SET_CALLS = "SET_CALLS";
 
 export const fetchContacts = () => {
   return async (dispatch, getState) => {
@@ -72,17 +71,19 @@ export const fetchContacts = () => {
     };
   };
 
-  export const fetchLastMessagesPerContact = (email) => {
-    return async (dispatch) => {
-        const querySnapshot = await getDocs(collection(db, "messages"));
+  export const fetchCalls = () => {
+    return async (dispatch,getState) => {
+      const state = getState();
+      const email = state.auth.email;
+        const querySnapshot = await getDocs(query(collection(db, "phoneCalls"),where("email","==",email)));
 
-        const loadMessages = [];
+        const loadCalls = [];
         querySnapshot.forEach((doc) => {
-        loadMessages.push(doc.data());
+          loadCalls.push(doc.data());
         });
       dispatch({
-        type: SET_LAST_MESSAGE_PER_CONTACT,
-        messages: loadMessages,
+        type: SET_CALLS,
+        calls: loadCalls.sort((a, b) => b.timestamp - a.timestamp)
       })
     };
   };
@@ -95,4 +96,17 @@ export const sendMessage = (message) => {
       console.error("Error adding document: ", error);
     }
   };
+}
+
+export const addPhoneCall = (phone) => {
+  return async (dispatch,getState) => {
+    const state = getState();
+    const email = state.auth.email;
+    const action = addDoc(collection(db, "phoneCalls"), {email:email,phone:phone,timestamp:Date.now()})
+    try {
+      await action;
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  }
 }

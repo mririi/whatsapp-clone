@@ -6,10 +6,13 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import CustomText from '@components/CustomText'
 import { useDispatch } from 'react-redux';
 import * as messagesActions from '@store/actions/contacts'
+import moment from 'moment';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const CustomContactCard = (props) => {
+const CustomCallCard = (props) => {
     const dispatch = useDispatch();
     const {data} = props
+    const dateTime = data?.timestamp && moment(data.timestamp).format('MMMM Do YYYY, h:mm:ss a')
     const handleCallPress = () => {
         if (data?.phone) {
             Linking.openURL(`tel:${data.phone}`);
@@ -39,25 +42,17 @@ const CustomContactCard = (props) => {
         alignSelf:"center",
         justifyContent: 'space-between'
     }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={{
-                width: normalize(60),
-                height: normalize(60),
-                borderRadius: normalize(30),
-                backgroundColor: colors.primary,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <CustomText style={{fontSize: normalize(20), color: colors.textDark}}>{data?.name.charAt(0).toUpperCase()}</CustomText>
-            </View>
+        <View style={{flexDirection: 'row'}}>
             <View style={{marginLeft: normalize(20)}}>
-                <CustomText style={{fontSize: normalize(20), color: colors.textLight}}>{data?.name}</CustomText>
-                <CustomText style={{fontSize: normalize(15), color: colors.textLight}}>{data?.phone}</CustomText>
+                <CustomText style={{fontSize: normalize(20), color: colors.textLight, textAlign:"left"}}>{data?.phone}</CustomText>
+                <CustomText style={{fontSize: normalize(15), color: colors.textLight, textAlign:"left"}}>{dateTime}</CustomText>
             </View>
         </View>
-        <Icon name="phone" onPress={handleCallPress} size={normalize(30)} color={colors.textLight} />
+        <TouchableOpacity onPress={handleCallPress}>
+          <Icon name="phone" size={normalize(30)} color={colors.textLight} />
+        </TouchableOpacity>
     </View>
   )
 }
 
-export default CustomContactCard
+export default CustomCallCard
