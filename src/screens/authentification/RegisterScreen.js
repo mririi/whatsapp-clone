@@ -72,71 +72,71 @@ const Login = (props) => {
     <CustomDarkBackground>
       <Toast />
       {isLoading && <CustomLoading />}
-      {!isLoading && 
-      <KeyboardAvoidingScrollView  style={{bottom:10}}>
-        <View style={{
-          marginTop: normalize(250, "height"),
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
-          <Formik
-            validationSchema={signUpValidationSchema}
-            initialValues={{
-              email: "",
-              password: "",
-              passwordConfirmation: "",
-            }}
-            onSubmit={(values, { resetForm }) => {
-              SignUpHandler(values, { resetForm });
-            }}
-          >
-            {({ handleSubmit, isValid }) => (
-              <>
-                <Field
-                  component={CustomTextInput}
-                  name="email"
-                  icon="envelope"
-                  placeholder="Email Address"
-                  keyboardType="email-address"
-                />
-                <Field
-                  component={CustomTextInput}
-                  name="password"
-                  icon="lock"
-                  placeholder="Password"
-                  secureTextEntry
-                />
-                <Field
-                  component={CustomTextInput}
-                  name="passwordConfirmation"
-                  icon="lock"
-                  placeholder="Password Confirmation"
-                  secureTextEntry
-                />
-                {isLoading ? (
-                  <ActivityIndicator size="small" color={colors.primary} />
-                ) : (
-                  <CustomButton
-                    style={{ width: "80%" }}
-                    title="Sign Up"
-                    onPress={handleSubmit}
-                    disabled={!isValid}
-                  />
-                )}
-              </>
-            )}
-          </Formik>
-          <CustomText>
-            Have an account?{" "}
-            <CustomText
-              style={{ color: colors.secondary }}
-              onPress={() => props.navigation.navigate("login")}
+      {!isLoading &&
+        <KeyboardAvoidingScrollView style={{ bottom: 10 }}>
+          <View style={{
+            marginTop: normalize(250, "height"),
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <Formik
+              validationSchema={signUpValidationSchema}
+              initialValues={{
+                email: "",
+                password: "",
+                passwordConfirmation: "",
+              }}
+              onSubmit={(values, { resetForm }) => {
+                SignUpHandler(values, { resetForm });
+              }}
             >
-              Sign In
+              {({ handleSubmit, isValid }) => (
+                <>
+                  <Field
+                    component={CustomTextInput}
+                    name="email"
+                    icon="envelope"
+                    placeholder="Email Address"
+                    keyboardType="email-address"
+                  />
+                  <Field
+                    component={CustomTextInput}
+                    name="password"
+                    icon="lock"
+                    placeholder="Password"
+                    secureTextEntry
+                  />
+                  <Field
+                    component={CustomTextInput}
+                    name="passwordConfirmation"
+                    icon="lock"
+                    placeholder="Password Confirmation"
+                    secureTextEntry
+                  />
+                  {isLoading ? (
+                    <ActivityIndicator size="small" color={colors.primary} />
+                  ) : (
+                    <CustomButton
+                      style={{ width: "80%" }}
+                      title="Sign Up"
+                      onPress={handleSubmit}
+                      disabled={!isValid}
+                    />
+                  )}
+                </>
+              )}
+            </Formik>
+            <CustomText>
+              Have an account?{" "}
+              <CustomText
+                style={{ color: colors.secondary }}
+                onPress={() => props.navigation.navigate("login")}
+              >
+                Sign In
+              </CustomText>
             </CustomText>
-          </CustomText>
-        </View>
-      </KeyboardAvoidingScrollView>}
+          </View>
+        </KeyboardAvoidingScrollView>}
     </CustomDarkBackground>
 
   );

@@ -14,7 +14,7 @@ const Chat = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [contacts, setContacts] = useState([]);
-  const contactsDATA = useSelector((state) => state.contacts.contacts);
+  const contactsDATA = useSelector((state) => state.contacts.contactsUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Chat = ({ navigation }) => {
   const loadContacts = useCallback(async () => {
     try {
       setError(null);
-      await dispatch(contactsActions.fetchContacts());
+      await dispatch(contactsActions.fetchContactsCurrentUser());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,17 +59,11 @@ const Chat = ({ navigation }) => {
         {loading && <CustomLoading />}
         {!loading && (
           <>
-            <Icon
-              name="plus"
-              size={35}
-              onPress={() => {}}
-              color={colors.textDark}
-              style={{ position: 'absolute', top: normalize(60), right: normalize(30) }}
-            />
             <CustomText style={{ marginTop: normalize(25) }}>Messages</CustomText>
             <View style={{ marginTop: normalize(20) }}>
               <FlatList
                 data={contacts}
+                keyExtractor={(item) => item.pseudo}
                 renderItem={({ item }) => (
                   <CustomMessageBox
                     contact={item}
@@ -80,7 +74,6 @@ const Chat = ({ navigation }) => {
                     }
                   />
                 )}
-                keyExtractor={(item) => item.email}
               />
             </View>
           </>

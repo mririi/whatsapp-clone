@@ -9,7 +9,7 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const store = configureStore();
   useEffect(() => {
-    const prepare = async() => {
+    const prepare = async () => {
       try {
         await Font.loadAsync({
           "poppins-regular": require("@assets/fonts/Poppins-Regular.ttf"),
@@ -27,7 +27,6 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
-
   return (
     <Provider store={store}>
       <NavigationContainer>

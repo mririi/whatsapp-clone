@@ -7,7 +7,7 @@ import colors from "@constants/colors";
 const CustomTextInput = (props) => {
   const {
     field: { name, onBlur, onChange, value },
-    form: { errors, touched, setFieldTouched },
+    form: { errors, touched, setFieldTouched, disabled },
     ...inputProps
   } = props;
 
@@ -26,6 +26,7 @@ const CustomTextInput = (props) => {
           placeholderTextColor={colors.textDark}
           value={value}
           onChangeText={(text) => onChange(name)(text)}
+          editable={!props.disabled}
           onBlur={() => {
             setFieldTouched(name);
             onBlur(name);

@@ -13,12 +13,12 @@ const Contacts = () => {
   const [error, setError] = useState('');
   const [contacts, setContacts] = useState([]);
   const dispatch = useDispatch();
-  const contactsDATA = useSelector((state) => state.contacts.contacts);
+  const contactsDATA = useSelector((state) => state.contacts.contactsUser);
 
   const loadContacts = useCallback(async () => {
     try {
       setError('');
-      await dispatch(contactsActions.fetchContacts());
+      await dispatch(contactsActions.fetchContactsCurrentUser());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -53,6 +53,7 @@ const Contacts = () => {
           <View style={{ marginTop: normalize(20) }}>
             <FlatList
               data={contacts}
+              keyExtractor={(item) => item}
               renderItem={({ item }) => <CustomContactCard data={item} />}
             />
           </View>

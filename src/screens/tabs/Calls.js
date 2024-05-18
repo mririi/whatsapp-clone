@@ -54,7 +54,9 @@ const Calls = () => {
   return (
     <CustomDarkBackground>
       <>
-        {loading && <CustomLoading />}
+        {loading &&
+          <CustomLoading />
+        }
         {!loading && (
           <>
             <CustomText style={{ marginTop: normalize(25) }}>Calls</CustomText>
@@ -62,7 +64,7 @@ const Calls = () => {
               <FlatList
                 data={calls}
                 renderItem={({ item }) => <CustomCallCard data={item} />}
-                keyExtractor={(item,index) => index}
+                keyExtractor={(item, index) => index}
               />
             </View>
           </>

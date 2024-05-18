@@ -68,7 +68,7 @@ const Login = (props) => {
     <CustomDarkBackground>
       <Toast />
       {isLoading && <CustomLoading />}
-      {!isLoading && <KeyboardAvoidingScrollView  style={{bottom:10}}>
+      {!isLoading && <KeyboardAvoidingScrollView style={{ bottom: 10 }}>
         <View style={{
           marginTop: normalize(250, "height"),
           justifyContent: "center",

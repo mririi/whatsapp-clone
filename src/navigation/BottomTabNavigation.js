@@ -10,7 +10,6 @@ import normalize from "react-native-normalize";
 import CustomText from "@components/CustomText";
 import Settings from "../screens/tabs/Settings";
 import Contacts from "../screens/tabs/Contacts";
-import Chat from "../screens/tabs/Chat";
 import Calls from "../screens/tabs/Calls";
 import Home from "../screens/tabs/Home";
 import ChatStackNavigation from "./ChatStackNavigation";
@@ -195,7 +194,7 @@ const BottomTabsNavigation = () => {
             tabBarLabel: "Chat",
             tabBarIcon: ({ focused }) => (
               <>
-              <View
+                <View
                   style={{
                     backgroundColor: colors.primary,
                     width: "100%",
@@ -212,8 +211,8 @@ const BottomTabsNavigation = () => {
                     source={require("@assets/images/chat.png")
                     }
                     style={{
-                      width: focused?normalize(29):normalize(25),
-                      height: focused?normalize(24):normalize(20),
+                      width: focused ? normalize(29) : normalize(25),
+                      height: focused ? normalize(24) : normalize(20),
                       position: "absolute",
                       top: normalize(15),
                     }}

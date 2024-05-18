@@ -8,54 +8,62 @@ import { useDispatch } from 'react-redux';
 import * as messagesActions from '@store/actions/contacts'
 
 const CustomContactCard = (props) => {
-    const dispatch = useDispatch();
-    const {data} = props
-    const handleCallPress = () => {
-        if (data?.phone) {
-            Linking.openURL(`tel:${data.phone}`);
-            addPhoneCall(data.phone);
-          } else {
-            alert('Please enter a valid phone number');
-          }
+  const dispatch = useDispatch();
+  const { data, add } = props
+  const handleCallPress = () => {
+    if (data?.phone) {
+      Linking.openURL(`tel:${data.phone}`);
+      addPhoneCall(data.phone);
+    } else {
+      alert('Please enter a valid phone number');
     }
-    const addPhoneCall = async (phone) => {
-            action = messagesActions.addPhoneCall(phone)
-            try {
-              dispatch(action);
-            } catch (err) {
-              console.log(err);
-            }
-      }
+  }
+  const addPhoneCall = async (phone) => {
+    action = messagesActions.addPhoneCall(phone)
+    try {
+      dispatch(action);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const handleAddToContact = async () => {
+    action = messagesActions.addToContacts(data?.pseudo)
+    try {
+      dispatch(action);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <View style={{
-        width:"95%",
-        height: normalize(100),
-        backgroundColor: colors.secondary,
-        padding: normalize(20),
-        margin: normalize(10),
-        borderRadius: normalize(10),
-        flexDirection: 'row',
-        alignItems: "center",
-        alignSelf:"center",
-        justifyContent: 'space-between'
+      width: "95%",
+      height: normalize(100),
+      backgroundColor: colors.secondary,
+      padding: normalize(20),
+      margin: normalize(10),
+      borderRadius: normalize(10),
+      flexDirection: 'row',
+      alignItems: "center",
+      alignSelf: "center",
+      justifyContent: 'space-between'
     }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={{
-                width: normalize(60),
-                height: normalize(60),
-                borderRadius: normalize(30),
-                backgroundColor: colors.primary,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <CustomText style={{fontSize: normalize(20), color: colors.textDark}}>{data?.name.charAt(0).toUpperCase()}</CustomText>
-            </View>
-            <View style={{marginLeft: normalize(20)}}>
-                <CustomText style={{fontSize: normalize(20), color: colors.textLight}}>{data?.name}</CustomText>
-                <CustomText style={{fontSize: normalize(15), color: colors.textLight}}>{data?.phone}</CustomText>
-            </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{
+          width: normalize(60),
+          height: normalize(60),
+          borderRadius: normalize(30),
+          backgroundColor: colors.primary,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <CustomText style={{ fontSize: normalize(20), color: colors.textDark }}>{data?.pseudo.charAt(0).toUpperCase()}</CustomText>
         </View>
-        <Icon name="phone" onPress={handleCallPress} size={normalize(30)} color={colors.textLight} />
+        <View style={{ marginLeft: normalize(20) }}>
+          <CustomText style={{ fontSize: normalize(20), color: colors.textLight }}>{data?.pseudo} <CustomText style={{ fontSize: normalize(15), color: colors.textLight }}>({data?.fullName})</CustomText></CustomText>
+          <CustomText style={{ fontSize: normalize(15), color: colors.textLight, textAlign: "left" }}>{data?.phone}</CustomText>
+        </View>
+      </View>
+      <Icon name={add ? "plus" : "phone"} onPress={add ? handleAddToContact : handleCallPress} size={normalize(30)} color={colors.textLight} />
     </View>
   )
 }
