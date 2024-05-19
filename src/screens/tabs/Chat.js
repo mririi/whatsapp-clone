@@ -63,7 +63,7 @@ const Chat = ({ navigation }) => {
             <View style={{ marginTop: normalize(20) }}>
               <FlatList
                 data={contacts}
-                keyExtractor={(item) => item.pseudo}
+                keyExtractor={() => '_' + Math.random().toString(36).substr(2, 9)}
                 renderItem={({ item }) => (
                   <CustomMessageBox
                     contact={item}

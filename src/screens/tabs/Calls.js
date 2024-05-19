@@ -64,7 +64,7 @@ const Calls = () => {
               <FlatList
                 data={calls}
                 renderItem={({ item }) => <CustomCallCard data={item} />}
-                keyExtractor={(item, index) => index}
+                keyExtractor={() => '_' + Math.random().toString(36).substr(2, 9)}
               />
             </View>
           </>

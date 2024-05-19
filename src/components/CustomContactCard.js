@@ -1,5 +1,5 @@
 import React from 'react'
-import { Linking, View } from 'react-native'
+import { Linking, TouchableOpacity, View } from 'react-native'
 import normalize from 'react-native-normalize'
 import colors from '@constants/colors'
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -63,7 +63,9 @@ const CustomContactCard = (props) => {
           <CustomText style={{ fontSize: normalize(15), color: colors.textLight, textAlign: "left" }}>{data?.phone}</CustomText>
         </View>
       </View>
-      <Icon name={add ? "plus" : "phone"} onPress={add ? handleAddToContact : handleCallPress} size={normalize(30)} color={colors.textLight} />
+      <TouchableOpacity onPress={add ? handleAddToContact : handleCallPress} >
+        <Icon name={add ? "plus" : "phone"} size={normalize(30)} color={colors.textLight} />
+      </TouchableOpacity>
     </View>
   )
 }

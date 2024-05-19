@@ -91,7 +91,6 @@ const ChatBox = ({ route, navigation }) => {
     try {
       setError(null);
       await dispatch(action);
-      loadMessages();
     } catch (err) {
       setError(err.message);
     }

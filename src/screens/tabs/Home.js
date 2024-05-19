@@ -47,17 +47,19 @@ const Home = () => {
     <CustomDarkBackground>
       {loading ? (
         <CustomLoading />
-      ) : (
+      ) : !!contacts.length ?(
         <>
           <CustomText style={{ marginTop: normalize(25) }}>All Profiles</CustomText>
           <View style={{ marginTop: normalize(20) }}>
             <FlatList
               data={contacts}
-              keyExtractor={(item) => item}
+              keyExtractor={() => '_' + Math.random().toString(36).substr(2, 9)}
               renderItem={({ item }) => <CustomContactCard data={item} add={true} />}
             />
           </View>
         </>
+      ):(
+        <CustomText style={{ marginTop: normalize(25) }}>No Profiles Found</CustomText>
       )}
     </CustomDarkBackground>
   );

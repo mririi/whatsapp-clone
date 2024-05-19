@@ -14,10 +14,24 @@ const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const dispatch = useDispatch();
   const contactsDATA = useSelector((state) => state.contacts.contactsUser);
+  console.log(contactsDATA);
+  useEffect(() => {
+    if (!contactsDATA) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [contactsDATA]);
 
+  useEffect(() => {
+    if (contactsDATA) {
+      setContacts(contactsDATA);
+    }
+  }, [contactsDATA]);
+  
   const loadContacts = useCallback(async () => {
     try {
-      setError('');
+      setError(null);
       await dispatch(contactsActions.fetchContactsCurrentUser());
     } catch (err) {
       setError(err.message);
@@ -27,37 +41,33 @@ const Contacts = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setLoading(true);
-    loadContacts();
-  }, [loadContacts]);
-
-  useEffect(() => {
     if (error) {
       Alert.alert('An error occurred!', error, [{ text: 'Ok' }]);
     }
   }, [error]);
 
   useEffect(() => {
-    if (contactsDATA) {
-      setContacts(contactsDATA);
-    }
-  }, [contactsDATA]);
+    setLoading(true);
+    loadContacts();
+  }, [loadContacts]);
 
   return (
     <CustomDarkBackground>
       {loading ? (
         <CustomLoading />
-      ) : (
+      ) : !!contacts.length? (
         <>
           <CustomText style={{ marginTop: normalize(25) }}>Contacts</CustomText>
           <View style={{ marginTop: normalize(20) }}>
             <FlatList
               data={contacts}
-              keyExtractor={(item) => item}
+              keyExtractor={() => '_' + Math.random().toString(36).substr(2, 9)}
               renderItem={({ item }) => <CustomContactCard data={item} />}
             />
           </View>
         </>
+      ): (
+        <CustomText style={{ marginTop: normalize(25) }}>No Contacts Found</CustomText>
       )}
     </CustomDarkBackground>
   );

@@ -12,6 +12,9 @@ export const fetchContacts = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const email = state.auth.email;
+    if (!email) {
+      return;
+    }
     const contactsRef = ref(db, 'contacts');
 
     try {
@@ -32,31 +35,55 @@ export const fetchContacts = () => {
 };
 
 export const fetchContactsCurrentUser = () => {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const state = getState();
     const email = state.auth.email;
     if (!email) {
+      console.log("No email found in state.");
       return;
     }
+
     const currentRef = query(ref(db, 'contacts'), orderByChild('user'), equalTo(email));
-    try {
-      const snapshotCurrent = await get(currentRef);
 
-      onValue(ref(db, 'contacts'), (snapshot) => {
-        const loadContacts = [];
-        contactsEmails = Object.values(snapshotCurrent.val())[0].contacts || [];
-        snapshot.forEach((childSnapshot) => {
+    const unsubscribe = onValue(currentRef, async (snapshotCurrent) => {
+      try {
+        const contactsEmails = snapshotCurrent.exists() ? Object.values(snapshotCurrent.val())[0].contacts || [] : [];
+        
+        // Adding debug logs to verify contactsEmails
+        console.log("Contacts Emails:", contactsEmails);
 
-          loadContacts.push(childSnapshot.val());
+        // Set up a listener for the contacts path
+        const contactsRef = ref(db, 'contacts');
+        const unsubscribeContacts = onValue(contactsRef, (snapshot) => {
+          const loadContacts = [];
+          snapshot.forEach((childSnapshot) => {
+            loadContacts.push(childSnapshot.val());
+          });
+
+          const filteredContacts = loadContacts.filter(contact => contactsEmails.includes(contact.user));
+
+          // Adding debug logs to see what is being dispatched
+          console.log("Dispatching contacts:", filteredContacts);
+
+          dispatch({
+            type: SET_CONTACTS_USER,
+            contactsUser: filteredContacts,
+          });
         });
-        dispatch({
-          type: SET_CONTACTS_USER,
-          contactsUser: loadContacts.filter(contact => contactsEmails.includes(contact.user)),
-        });
-      });
-    } catch (error) {
-      console.error("Error fetching contacts:", error);
-    }
+
+        return () => {
+          console.log("Unsubscribing from contacts listener.");
+          unsubscribeContacts();
+        };
+      } catch (error) {
+        console.error("Error processing contacts:", error);
+      }
+    });
+
+    return () => {
+      console.log("Unsubscribing from current user contacts listener.");
+      unsubscribe();
+    };
   };
 };
 
